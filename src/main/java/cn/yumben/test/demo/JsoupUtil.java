@@ -50,9 +50,9 @@ public class JsoupUtil {
                 detailsUrl.add("http://www.cnnvd.org.cn" + element.attr("href"));
             }
         }
-        for (String str : detailsUrl) {
+        /*for (String str : detailsUrl) {
            System.out.println(str);
-        }
+        }*/
         return detailsUrl;
     }
 
@@ -77,7 +77,7 @@ public class JsoupUtil {
             /*System.err.println(particulars);*/
             for (Element element : particulars) {
                 String content = element.text();
-                System.out.println(content);
+               /* System.out.println(content);*/
                 //获取CNNVD编号
                 if (content.contains("CNNVD")) {
                     bugReport.setCnnvdId(content.substring(content.lastIndexOf("：") + 1));

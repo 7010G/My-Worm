@@ -14,7 +14,6 @@ public class main {
     public static void main(String[] args) throws InterruptedException {
 
         postTest();
-
         //HttpClientUtil.imageDownload("https://img12.360buyimg.com/n7/jfs/t1/79706/18/6581/112584/5d492587E32ba70ae/47fdb0779e7dad8a.jpg");
     }
 
@@ -29,12 +28,33 @@ public class main {
         productNameList.add("Nginx");
         String url = "http://www.cnnvd.org.cn/web/vulnerability/queryLds.tag";
         //使用Lambda表达式实现多线程闭包
-
         for (String productName : productNameList) {
             //解析详情页链接
             Runnable run_1 = () -> run_1(productName, url);
-            ;
             TheThreadPool.getThreadPool().execute(run_1);
+        }
+        while (true) {
+            int queueSize = TheThreadPool.getThreadPool().getQueue().size();
+            System.err.println("当前排队线程数：" + queueSize);
+
+            int activeCount = TheThreadPool.getThreadPool().getActiveCount();
+            System.err.println("当前活动线程数：" + activeCount);
+
+            long completedTaskCount = TheThreadPool.getThreadPool().getCompletedTaskCount();
+            System.err.println("执行完成线程数：" + completedTaskCount);
+
+            long taskCount = TheThreadPool.getThreadPool().getTaskCount();
+            System.err.println("总线程数：" + taskCount);
+
+            Thread.sleep(1000);
+            if(TheThreadPool.getThreadPool().getActiveCount()==0){
+                TheThreadPool.getThreadPool().shutdown();
+                for(BugReport bugReport : bugReportsList){
+                    System.out.println(bugReport.toString());
+                }
+                System.out.println(bugReportsList.size());
+                break;
+            }
         }
     }
 
@@ -71,7 +91,7 @@ public class main {
         for (BugReport bugReport : bugReports) {
             bugReportsList.add(bugReport);
             //我无法知道还有没有其它线程正在运行
-            System.out.println(bugReportsList.size());
+           // System.out.println(bugReportsList.size());
         }
     }
 }
