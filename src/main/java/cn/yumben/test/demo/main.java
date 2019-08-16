@@ -1,6 +1,8 @@
 package cn.yumben.test.demo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,8 +12,10 @@ import java.util.List;
 public class main {
 
     private static List<BugReport> bugReportsList = new ArrayList<BugReport>();
+    private static Date a = new Date();
 
     public static void main(String[] args) throws InterruptedException {
+
 
         postTest();
         //HttpClientUtil.imageDownload("https://img12.360buyimg.com/n7/jfs/t1/79706/18/6581/112584/5d492587E32ba70ae/47fdb0779e7dad8a.jpg");
@@ -26,6 +30,17 @@ public class main {
         productNameList.add("Tomcat");
         productNameList.add("Zookeeper");
         productNameList.add("Nginx");
+        productNameList.add("Redis");
+        productNameList.add("OpenFire");
+        productNameList.add("ElasticSearch");
+        productNameList.add("ActiveMQ");
+        productNameList.add("LogStash");
+        productNameList.add("Memcached");
+        productNameList.add("kafka");
+        productNameList.add("mysql");
+        productNameList.add("jetty");
+        productNameList.add("Druid");
+
         String url = "http://www.cnnvd.org.cn/web/vulnerability/queryLds.tag";
         //使用Lambda表达式实现多线程闭包
         for (String productName : productNameList) {
@@ -47,12 +62,17 @@ public class main {
             System.err.println("总线程数：" + taskCount);
 
             Thread.sleep(1000);
-            if(TheThreadPool.getThreadPool().getActiveCount()==0){
+            if (TheThreadPool.getThreadPool().getActiveCount() == 0) {
                 TheThreadPool.getThreadPool().shutdown();
-                for(BugReport bugReport : bugReportsList){
+                for (BugReport bugReport : bugReportsList) {
                     System.out.println(bugReport.toString());
                 }
-                System.out.println(bugReportsList.size());
+                for (int a =0;a < productNameList.size();a++){
+                    System.out.println(productNameList.get(a));
+                }
+                System.out.println("漏洞总数："+bugReportsList.size());
+                Date b=new Date();
+                System.out.println(("运行耗时:"+(b.getTime()-a.getTime())/1000)+"s");
                 break;
             }
         }
@@ -91,7 +111,7 @@ public class main {
         for (BugReport bugReport : bugReports) {
             bugReportsList.add(bugReport);
             //我无法知道还有没有其它线程正在运行
-           // System.out.println(bugReportsList.size());
+            // System.out.println(bugReportsList.size());
         }
     }
 }

@@ -25,7 +25,7 @@ public class TheThreadPool {
             if (threadPool == null) {
                 //构造一个线程池
                 threadPool = new ThreadPoolExecutor(80, 80, 3, TimeUnit.SECONDS,
-                        new ArrayBlockingQueue<Runnable>(15),
+                        new ArrayBlockingQueue<Runnable>(80),
                         new ThreadPoolExecutor.DiscardOldestPolicy());
             }
         }
