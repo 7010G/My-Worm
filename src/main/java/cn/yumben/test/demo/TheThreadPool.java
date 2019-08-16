@@ -24,7 +24,7 @@ public class TheThreadPool {
         synchronized (ExecutorService.class) {
             if (threadPool == null) {
                 //构造一个线程池
-                threadPool = new ThreadPoolExecutor(100, 80, 3, TimeUnit.SECONDS,
+                threadPool = new ThreadPoolExecutor(80, 80, 3, TimeUnit.SECONDS,
                         new ArrayBlockingQueue<Runnable>(15),
                         new ThreadPoolExecutor.DiscardOldestPolicy());
             }
