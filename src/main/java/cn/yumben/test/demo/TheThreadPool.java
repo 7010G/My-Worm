@@ -4,7 +4,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * @author zzg
+ */
 public class TheThreadPool {
 
     private static ThreadPoolExecutor threadPool = null;
@@ -22,8 +24,8 @@ public class TheThreadPool {
         synchronized (ExecutorService.class) {
             if (threadPool == null) {
                 //构造一个线程池
-               threadPool = new ThreadPoolExecutor(50, 50, 3,TimeUnit.SECONDS,
-                        new ArrayBlockingQueue<Runnable>(3),
+                threadPool = new ThreadPoolExecutor(100, 80, 3, TimeUnit.SECONDS,
+                        new ArrayBlockingQueue<Runnable>(15),
                         new ThreadPoolExecutor.DiscardOldestPolicy());
             }
         }

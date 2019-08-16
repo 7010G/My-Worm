@@ -20,8 +20,10 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.*;
 
+/**
+ * @author zzg
+ */
 public class HttpClientUtil {
-
 
     private static RequestConfig requestConfig = null;
 
@@ -130,22 +132,22 @@ public class HttpClientUtil {
     private String parseTheResponse(HttpGet httpGet, HttpPost httpPost) throws IOException {
         CloseableHttpClient HttpClient = HttpClients.custom().setConnectionManager(HttpClientPool.getConnectionManager()).build();
         String content = null;
-        CloseableHttpResponse execute = null;
+        CloseableHttpResponse response = null;
         if (httpGet != null) {
-            execute = HttpClient.execute(httpGet);
+            response = HttpClient.execute(httpGet);
         } else {
-            execute = HttpClient.execute(httpPost);
+            response = HttpClient.execute(httpPost);
         }
         //解析响应
-        if (execute.getStatusLine().getStatusCode() == 200) {
-            if (execute.getEntity() != null) {
-                HttpEntity entity = execute.getEntity();
+        if (response.getStatusLine().getStatusCode() == 200) {
+            if (response.getEntity() != null) {
+                HttpEntity entity = response.getEntity();
                 content = EntityUtils.toString(entity, "utf8");
             }
         }
-
-        if (execute != null) {
-            execute.close();
+        //关闭Response
+        if (response != null) {
+            response.close();
         }
         return content;
     }

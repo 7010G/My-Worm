@@ -3,6 +3,9 @@ package cn.yumben.test.demo;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author zzg
+ */
 public class ListDeal {
 
     /**
@@ -28,7 +31,7 @@ public class ListDeal {
             int pre = size / count;
             int last = size % count;
             //前面pre个集合，每个大小都是count个元素
-            for (int I = 0; I < pre; I ++) {
+            for (int I = 0; I < pre; I++) {
                 List<T> itemList = new ArrayList<T>();
                 for (int J = 0; J < count; J++) {
                     itemList.add(resList.get(I * count + J));

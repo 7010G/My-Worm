@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * 解析www.cnnvd.org.cn JsoupUtil工具类
+ * @author zzg
  */
 public class JsoupUtil {
 
@@ -39,20 +40,18 @@ public class JsoupUtil {
         //遍历每一页
         for (int i = 1; i <= numberPage; i++) {
             nextPage = url + "?pageno=" + i;
-            //System.out.println(nextPage);
             //开始解析每页数据
             String postRequest = new HttpClientUtil().postRequest(nextPage, paramMap);
             //首先收集每页数据的详情页链接
             Document parse = Jsoup.parse(postRequest);
             Elements select1 = parse.select("[target=_blank].a_title2");
             for (Element element : select1) {
-                //System.out.println(element);
                 //服务器地址+请求地址
                 detailsUrl.add("http://www.cnnvd.org.cn" + element.attr("href"));
             }
         }
         for (String str : detailsUrl) {
-           // System.out.println(str);
+           System.out.println(str);
         }
         return detailsUrl;
     }
@@ -75,14 +74,13 @@ public class JsoupUtil {
             System.out.println(loopholeName);
             //获取漏洞详情
             Elements particulars = document.select("[class=detail_xq w770] > ul > li");
-            //System.err.println(particulars);
+            /*System.err.println(particulars);*/
             for (Element element : particulars) {
                 String content = element.text();
-                //System.out.println(content);
+                System.out.println(content);
                 //获取CNNVD编号
                 if (content.contains("CNNVD")) {
                     bugReport.setCnnvdId(content.substring(content.lastIndexOf("：") + 1));
-                    //获取危害等级
                 } else if (content.contains("危害等级")) {
                     bugReport.setImportantLevel(content.substring(content.lastIndexOf("：") + 1));
                 } else if (content.contains("CVE")) {
@@ -103,13 +101,13 @@ public class JsoupUtil {
             }
             //获取漏洞简介
             String loopholeSynopsis = document.select("[class=d_ldjj] > p").text();
-            //System.out.println("漏洞简介:"+loopholeSynopsis);
+            /*System.out.println("漏洞简介:"+loopholeSynopsis);*/
             bugReport.setLoopholeSynopsis(loopholeSynopsis);
             //获取受影响的实体
             Elements affectedEntities = document.select("[id=ent] > p");
             ArrayList<String> affectedEntitiesList = new ArrayList<>();
             for (Element element : affectedEntities) {
-                //System.out.println("受影响的实体:"+element.text());
+                /*System.out.println("受影响的实体:"+element.text());*/
                 affectedEntitiesList.add(element.text());
             }
             bugReport.setAffectedEntities(affectedEntitiesList);
@@ -118,13 +116,13 @@ public class JsoupUtil {
             HashMap<String, String> patchMap = new HashMap<>();
             for(Element element:patchs){
                 Elements as = element.getElementsByTag("a");
-               // System.out.println("补丁:"+as);
+              /* System.out.println("补丁:"+as);*/
                 for(Element a: as ) {
                     patchMap.put(a.text(), "http://www.cnnvd.org.cn"+a.attr("href"));
                 }
             }
             bugReport.setPatch(patchMap);
-            //System.out.println(bugReport.toString());
+
             bugReportList.add(bugReport);
         }
         return bugReportList;
