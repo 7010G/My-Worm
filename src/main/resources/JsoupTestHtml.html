@@ -1,0 +1,142 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" /><title>iTop 登录</title>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/pages/ajax.document.php?operation=dict&s=ZH CN-7b610d406f5b5712d359e6ea1dfb388a&t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/jquery-3.3.1.min.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/jquery-migrate-3.0.1.prod.min.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/jquery-ui-1.11.4.custom.min.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/utils.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/hovertip.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/jquery.tablesorter.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/jquery.tablesorter.pager.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/jquery.tablehover.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/table-selectable-lines.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/field_sorter.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/datatable.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/jquery.positionBy.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/jquery.popupmenu.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/searchformforeignkeys.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/latinise/latinise.min.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_handler.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_handler_history.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria_raw.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria_string.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria_external_field.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria_numeric.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria_enum.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria_tag_set.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria_external_key.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria_hierarchical_key.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria_date_abstract.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria_date.js?t=1562742047.1235"></script>
+    <script type="text/javascript" src="http://120.79.213.36/2.6/web/js/search/search_form_criteria_date_time.js?t=1562742047.1235"></script>
+    <script type="text/javascript">
+        function GetAbsoluteUrlAppRoot()
+        {
+            return 'http://120.79.213.36/2.6/web/';
+        }
+
+        function GetAbsoluteUrlModulesRoot()
+        {
+            return 'http://120.79.213.36/2.6/web/env-production/';
+        }
+
+        function GetAbsoluteUrlModulePage(sModule, sPage, aArguments)
+        {
+            // aArguments is optional, it default to an empty hash
+            aArguments = typeof aArguments !== 'undefined' ? aArguments : {};
+
+            var sUrl = 'http://120.79.213.36/2.6/web/'+'pages/exec.php?exec_module='+sModule+'&exec_page='+sPage+'&exec_env='+'production';
+            for (var sArgName in aArguments)
+            {
+                if (aArguments.hasOwnProperty(sArgName))
+                {
+                    sUrl = sUrl + '&'+sArgName+'='+aArguments[sArgname];
+                }
+            }
+            return sUrl;
+        }
+
+        function AddAppContext(sURL)
+        {
+            var sContext = '';
+            if (sContext.length > 0)
+            {
+                if (sURL.indexOf('?') == -1)
+                {
+                    return sURL+'?'+sContext;
+                }
+                return sURL+'&'+sContext;
+            }
+            return sURL;
+        }
+        $(document).ready(function() {
+            //add new widget called TruncatedList to properly display truncated lists when they are sorted
+            $.tablesorter.addWidget({
+                // give the widget a id
+                id: "truncatedList",
+                // format is called when the on init and when a sorting has finished
+                format: function(table)
+                {
+                    // Check if there is a "truncated" line
+                    this.truncatedList = false;
+                    if ($("tr td.truncated",table).length > 0)
+                    {
+                        this.truncatedList = true;
+                    }
+                    if (this.truncatedList)
+                    {
+                        $("tr td",table).removeClass('truncated');
+                        $("tr:last td",table).addClass('truncated');
+                    }
+                }
+            });
+
+            $.tablesorter.addWidget({
+                // give the widget a id
+                id: "myZebra",
+                // format is called when the on init and when a sorting has finished
+                format: function(table)
+                {
+                    // Replace the 'red even' lines by 'red_even' since most browser do not support 2 classes selector in CSS, etc..
+                    $("tbody tr:even",table).addClass('even');
+                    $("tbody tr.red:even",table).removeClass('red').removeClass('even').addClass('red_even');
+                    $("tbody tr.orange:even",table).removeClass('orange').removeClass('even').addClass('orange_even');
+                    $("tbody tr.green:even",table).removeClass('green').removeClass('even').addClass('green_even');
+                    // In case we sort again the table, we need to remove the added 'even' classes on odd rows
+                    $("tbody tr:odd",table).removeClass('even');
+                    $("tbody tr.red_even:odd",table).removeClass('even').removeClass('red_even').addClass('red');
+                    $("tbody tr.orange_even:odd",table).removeClass('even').removeClass('orange_even').addClass('orange');
+                    $("tbody tr.green_even:odd",table).removeClass('even').removeClass('green_even').addClass('green');
+                }
+            });
+            $("table.listResults").tableHover(); // hover tables
+            $("#user").focus();
+        });
+    </script>
+    <link rel="stylesheet" type="text/css" href="http://120.79.213.36/2.6/web/css/ui-lightness/jquery-ui-1.11.4.custom.css?t=1562742047.1235" />
+    <link rel="stylesheet" type="text/css" href="http://120.79.213.36/2.6/web/css/light-grey.css?t=1562742047.1235" />
+    <link rel="stylesheet" type="text/css" href="http://120.79.213.36/2.6/web/css/login.css?t=1562742047.1235" />
+    <link rel="shortcut icon" href="http://120.79.213.36/2.6/web/images/favicon.ico?t=1562742047.1235" />
+</head>
+<body>
+<div id="login-logo"><a href="http://www.combodo.com/itop"><img title="iTop version 2.6.1" src="http://120.79.213.36/2.6/web/images/itop-logo-external.png?t=1562742047.1235"></a></div>
+<div id="login">
+    <h1>欢迎使用iTop!</h1>
+    <p>请完成身份认证</p>
+    <form method="post">
+        <table>
+            <tr><td style="text-align:right"><label for="user">用户名:</label></td><td style="text-align:left"><input id="user" type="text" name="auth_user" value="" /></td></tr>
+            <tr><td style="text-align:right"><label for="pwd">密码:</label></td><td style="text-align:left"><input id="pwd" type="password" name="auth_pwd" value="" /></td></tr>
+            <tr><td colspan="2" class="center v-spacer"><span class="btn_border"><input type="submit" value="登录iTop" /></span></td></tr>
+            <tr><td colspan="2" class="center v-spacer"><a href="http://120.79.213.36/2.6/web/pages/UI.php?loginop=forgot_pwd" target="_blank">忘记密码?</a></td></tr>
+        </table>
+        <input type="hidden" name="loginop" value="login" />
+    </form>
+</div>
+<div id="at_the_end" abc="abc" class="center v-spacer" attr="asdfasdfadf">iTop</div></body>
+</html>
