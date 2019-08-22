@@ -32,11 +32,11 @@ public class HttpClientUtil {
     static {
         requestConfig = RequestConfig.custom()
                 //设置创建连接的最长时间，单位是毫秒
-                .setConnectTimeout(5000)
+                .setConnectTimeout(10000)
                 //设置获取连接的最长时间，单位是毫秒
-                .setConnectionRequestTimeout(5000)
+                .setConnectionRequestTimeout(10000)
                 //设置数据传输的最长时间，单位是毫秒
-                .setSocketTimeout(10 * 1000).build();
+                .setSocketTimeout(10 * 5000).build();
     }
 
     /**

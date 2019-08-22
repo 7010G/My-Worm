@@ -1,12 +1,15 @@
 package cn.yumben.test.demo;
 
-import java.text.SimpleDateFormat;
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 /**
+ * 调优需要注意的有 产品的总数量不能超过线程排队列队大小  单个产品的详情链接不能超过线程排队列队大小 拆分的详情页链接多少链接为一个线程
+ *
  * @author zzg
  */
 public class main {
@@ -25,28 +28,17 @@ public class main {
      * 获取初始信息完成自动翻页
      */
     public static void postTest() throws InterruptedException {
-
-        ArrayList<String> productNameList = new ArrayList<>();
-        productNameList.add("Tomcat");
-        productNameList.add("Zookeeper");
-        productNameList.add("Nginx");
-        productNameList.add("Redis");
-        productNameList.add("OpenFire");
-        productNameList.add("ElasticSearch");
-        productNameList.add("ActiveMQ");
-        productNameList.add("LogStash");
-        productNameList.add("Memcached");
-        productNameList.add("kafka");
-        productNameList.add("mysql");
-        productNameList.add("jetty");
-        productNameList.add("Druid");
-
         String url = "http://www.cnnvd.org.cn/web/vulnerability/queryLds.tag";
+        JSONArray productNameList = ConfigUtil.getValues("SZS", "ProductList");
+        System.out.println();
         //使用Lambda表达式实现多线程闭包
-        for (String productName : productNameList) {
+        for (int i = 0; i < productNameList.length(); i++) {
+
             //解析详情页链接
-            Runnable run_1 = () -> run_1(productName, url);
+            int finalI = i;
+            Runnable run_1 = () -> run_1(productNameList.get(finalI).toString(), url);
             TheThreadPool.getThreadPool().execute(run_1);
+
         }
         while (true) {
             int queueSize = TheThreadPool.getThreadPool().getQueue().size();
@@ -67,12 +59,12 @@ public class main {
                 for (BugReport bugReport : bugReportsList) {
                     System.out.println(bugReport.toString());
                 }
-                for (int a =0;a < productNameList.size();a++){
+                for (int a = 0; a < productNameList.length(); a++) {
                     System.out.println(productNameList.get(a));
                 }
-                System.out.println("漏洞总数："+bugReportsList.size());
-                Date b=new Date();
-                System.out.println(("运行耗时:"+(b.getTime()-a.getTime())/1000)+"s");
+                System.out.println("漏洞总数：" + bugReportsList.size());
+                Date b = new Date();
+                System.out.println(("运行耗时:" + (b.getTime() - a.getTime()) / 1000) + "s");
                 break;
             }
         }
@@ -95,9 +87,21 @@ public class main {
         List<List<String>> split = ListDeal.split(detailsUrlList, 5);
 
         for (int i = 0; i < split.size(); i++) {
-            int finalI = i;
-            Runnable run_2 = () -> run_2(split.get(finalI));
-            TheThreadPool.getThreadPool().execute(run_2);
+            int queueSize = TheThreadPool.getThreadPool().getQueue().size();
+            System.err.println("当前排队线程数：" + queueSize);
+            //如果当前排队线程数等于 等待列队的大小，则休眠1s
+            if (queueSize == TheThreadPool.CAPACITY) {
+                try {
+                    i -= 1;
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                int finalI = i;
+                Runnable run_2 = () -> run_2(split.get(finalI));
+                TheThreadPool.getThreadPool().execute(run_2);
+            }
         }
     }
 
@@ -110,8 +114,13 @@ public class main {
         List<BugReport> bugReports = new JsoupUtil().parsedetailsUrl(split);
         for (BugReport bugReport : bugReports) {
             bugReportsList.add(bugReport);
-            //我无法知道还有没有其它线程正在运行
-            // System.out.println(bugReportsList.size());
         }
+    }
+
+    /**
+     * 将结果集数据与配置文件数据进行对比返回匹配项
+     */
+    public static void dataSet() {
+
     }
 }

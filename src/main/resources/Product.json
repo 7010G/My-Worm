@@ -1,0 +1,64 @@
+{
+  "SZS": {
+    "ProductList": [
+      "Tomcat",
+      "Zookeeper",
+      "Nginx",
+      "Redis",
+      "OpenFire",
+      "ElasticSearch",
+      "ActiveMQ",
+      "LogStash",
+      "Memcached",
+      "kafka",
+      "mysql",
+      "jetty",
+      "Druid"
+    ],
+    "ProductVersion": {
+      "Tomcat": [
+        "7.0.47",
+        "8.0.53"
+      ],
+      "Zookeeper": [
+        "3.4.6",
+        "3.4.8"
+      ],
+      "Nginx": [
+        "1.12.2",
+        "1.13.3"
+      ],
+      "Redis": [
+        "3.2.9",
+        "3.2.10"
+      ],
+      "OpenFire": [
+        "3.8.1"
+      ],
+      "ElasticSearch": [
+        "6.5.4"
+      ],
+      "ActiveMQ": [
+        "5.14.0"
+      ],
+      "LogStash": [
+        "6.5.4"
+      ],
+      "Memcached": [
+        "2.4.9"
+      ],
+      "kafka": [
+        "2.1"
+      ],
+      "mysql": [
+        "5.7.22"
+      ],
+      "jetty": [
+        "9.2.14"
+      ],
+      "Druid": [
+        "1.0.9"
+      ]
+    }
+  }
+}
