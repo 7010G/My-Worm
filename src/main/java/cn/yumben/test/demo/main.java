@@ -14,7 +14,8 @@ import java.util.List;
  */
 public class main {
 
-    private static List<BugReport> bugReportsList = new ArrayList<BugReport>();
+    private static HashMap<String, ArrayList<BugReport>> hashMap = new HashMap<>();
+
     private static Date a = new Date();
 
     public static void main(String[] args) throws InterruptedException {
@@ -33,10 +34,11 @@ public class main {
         System.out.println();
         //使用Lambda表达式实现多线程闭包
         for (int i = 0; i < productNameList.length(); i++) {
+            String productName = productNameList.get(i).toString();
 
+            hashMap.put(productName, new ArrayList<BugReport>());
             //解析详情页链接
-            int finalI = i;
-            Runnable run_1 = () -> run_1(productNameList.get(finalI).toString(), url);
+            Runnable run_1 = () -> run_1(productName, url);
             TheThreadPool.getThreadPool().execute(run_1);
 
         }
@@ -56,18 +58,19 @@ public class main {
             Thread.sleep(1000);
             if (TheThreadPool.getThreadPool().getActiveCount() == 0) {
                 TheThreadPool.getThreadPool().shutdown();
-                for (BugReport bugReport : bugReportsList) {
+               /* for (BugReport bugReport : bugReportsList) {
                     System.out.println(bugReport.toString());
-                }
+                }*/
                 for (int a = 0; a < productNameList.length(); a++) {
                     System.out.println(productNameList.get(a));
                 }
-                System.out.println("漏洞总数：" + bugReportsList.size());
+                //System.out.println("漏洞总数：" + bugReportsList.size());
                 Date b = new Date();
                 System.out.println(("运行耗时:" + (b.getTime() - a.getTime()) / 1000) + "s");
                 break;
             }
         }
+        dataSet();
     }
 
     /**
@@ -99,7 +102,7 @@ public class main {
                 }
             } else {
                 int finalI = i;
-                Runnable run_2 = () -> run_2(split.get(finalI));
+                Runnable run_2 = () -> run_2(split.get(finalI), productName);
                 TheThreadPool.getThreadPool().execute(run_2);
             }
         }
@@ -110,10 +113,11 @@ public class main {
      *
      * @param split 被平均拆分的部分详情链接
      */
-    public static void run_2(List<String> split) {
+    public static void run_2(List<String> split, String productName) {
+
         List<BugReport> bugReports = new JsoupUtil().parsedetailsUrl(split);
         for (BugReport bugReport : bugReports) {
-            bugReportsList.add(bugReport);
+            hashMap.get(productName).add(bugReport);
         }
     }
 
@@ -121,6 +125,49 @@ public class main {
      * 将结果集数据与配置文件数据进行对比返回匹配项
      */
     public static void dataSet() {
+        //总数
+        int sun = 0;
+        //有效集
+        int effectiveSet = 0;
+        //最终结果
+        ArrayList<BugReport> resultfinal = new ArrayList<>();
+
+        //获取产品集
+        JSONArray productNameList = ConfigUtil.getValues("SZS", "ProductList");
+
+        for (Object jsonObject : productNameList) {
+
+            //获取产品集Versions
+            JSONArray versionArray = ConfigUtil.getJSONObject()
+                    .getJSONObject("SZS")
+                    .getJSONObject("ProductVersion")
+                    .getJSONArray(jsonObject.toString());
+            //根据产品名称获取单个产品的漏洞集
+            ArrayList<BugReport> arrayList = hashMap.get(jsonObject.toString());
+            //循环对比漏洞信息
+            for (BugReport bugReport : arrayList) {
+                System.err.println(bugReport.toString());
+                //漏洞简介
+                String loopholeSynopsis = bugReport.getLoopholeSynopsis();
+                for (Object version : versionArray) {
+                    //直接匹配漏洞简介中是否包含相对应的版本号
+                    if (loopholeSynopsis.contains(version.toString())) {
+                        resultfinal.add(bugReport);
+                        effectiveSet++;
+                    }
+                }
+                sun++;
+            }
+        }
+        /**
+         *  观察漏洞报告可得知，除去版本 硬匹配得到的数据之外 版本号附近 包含 " 及之前 ， 至 ，  之前 "这几个字段代表：
+         *
+         *   xxxx及之前 代表小于等于xxxx版本,   aaaa至bbbb 代表 大于等于 aaaa版本小于等于 bbbb版本  ，aaa之前  代表小于aaa版本
+         */
+        /*for (BugReport bugReport : resultfinal) {
+            System.err.println(bugReport);
+        }*/
+        System.out.println("漏洞总数：" + sun + "，匹配漏洞数：" + effectiveSet);
 
     }
 }
