@@ -24,7 +24,7 @@ public class JsoupUtil {
         //下一页链接
         String nextPage = null;
         //存储详情页链接
-        ArrayList<String> detailsUrl = new ArrayList<>();
+        ArrayList<String> detailsUrl = new ArrayList<String>();
         //解析字符串
         Document document = Jsoup.parse(content);
         //由于总页数取不到，只能选择总条数来计算总页数
@@ -62,7 +62,7 @@ public class JsoupUtil {
      * @return
      */
     public  List<BugReport> parsedetailsUrl(List<String> parsedetailsUrl) {
-        ArrayList<BugReport> bugReportList = new ArrayList<>();
+        ArrayList<BugReport> bugReportList = new ArrayList<BugReport>();
         for (String url : parsedetailsUrl) {
             BugReport bugReport = new BugReport();
             String request = new HttpClientUtil().getRequest(url, null);
@@ -105,7 +105,7 @@ public class JsoupUtil {
             bugReport.setLoopholeSynopsis(loopholeSynopsis);
             //获取受影响的实体
             Elements affectedEntities = document.select("[id=ent] > p");
-            ArrayList<String> affectedEntitiesList = new ArrayList<>();
+            ArrayList<String> affectedEntitiesList = new ArrayList<String>();
             for (Element element : affectedEntities) {
                 /*System.out.println("受影响的实体:"+element.text());*/
                 affectedEntitiesList.add(element.text());
@@ -113,7 +113,7 @@ public class JsoupUtil {
             bugReport.setAffectedEntities(affectedEntitiesList);
             //获取补丁
             Elements patchs = document.select("[id=pat]");
-            HashMap<String, String> patchMap = new HashMap<>();
+            HashMap<String, String> patchMap = new HashMap<String, String>();
             for(Element element:patchs){
                 Elements as = element.getElementsByTag("a");
               /* System.out.println("补丁:"+as);*/
