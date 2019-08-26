@@ -2,6 +2,7 @@ package cn.yumben.test.demo;
 
 import org.json.JSONArray;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,14 +16,15 @@ import java.util.List;
 public class main {
 
     private static HashMap<String, ArrayList<BugReport>> hashMap = new HashMap<>();
+    //初始化产品集
+    private static JSONArray productNameList = ConfigUtil.getValues("SZS", "ProductList");
 
-    private static Date a = new Date();
 
     public static void main(String[] args) throws InterruptedException {
-
-
+        Date a = new Date();
         postTest();
-        //HttpClientUtil.imageDownload("https://img12.360buyimg.com/n7/jfs/t1/79706/18/6581/112584/5d492587E32ba70ae/47fdb0779e7dad8a.jpg");
+        Date b = new Date();
+        System.out.println(("运行耗时:" + (b.getTime() - a.getTime()) / 1000) + "s");
     }
 
     /**
@@ -30,7 +32,7 @@ public class main {
      */
     public static void postTest() throws InterruptedException {
         String url = "http://www.cnnvd.org.cn/web/vulnerability/queryLds.tag";
-        JSONArray productNameList = ConfigUtil.getValues("SZS", "ProductList");
+
         System.out.println();
         //使用Lambda表达式实现多线程闭包
         for (int i = 0; i < productNameList.length(); i++) {
@@ -65,8 +67,7 @@ public class main {
                     System.out.println(productNameList.get(a));
                 }
                 //System.out.println("漏洞总数：" + bugReportsList.size());
-                Date b = new Date();
-                System.out.println(("运行耗时:" + (b.getTime() - a.getTime()) / 1000) + "s");
+
                 break;
             }
         }
@@ -120,7 +121,6 @@ public class main {
             hashMap.get(productName).add(bugReport);
         }
     }
-
     /**
      * 将结果集数据与配置文件数据进行对比返回匹配项
      */
@@ -131,13 +131,9 @@ public class main {
         int effectiveSet = 0;
         //最终结果
         ArrayList<BugReport> resultfinal = new ArrayList<>();
-
-        //获取产品集
-        JSONArray productNameList = ConfigUtil.getValues("SZS", "ProductList");
-
+        //遍历产品集
         for (Object jsonObject : productNameList) {
-
-            //获取产品集Versions
+            //根据产品名称获取对用产品的版本集
             JSONArray versionArray = ConfigUtil.getJSONObject()
                     .getJSONObject("SZS")
                     .getJSONObject("ProductVersion")
@@ -146,15 +142,21 @@ public class main {
             ArrayList<BugReport> arrayList = hashMap.get(jsonObject.toString());
             //循环对比漏洞信息
             for (BugReport bugReport : arrayList) {
-                System.err.println(bugReport.toString());
+                System.err.println(bugReport.getLoopholeSynopsis());
                 //漏洞简介
                 String loopholeSynopsis = bugReport.getLoopholeSynopsis();
-                for (Object version : versionArray) {
-                    //直接匹配漏洞简介中是否包含相对应的版本号
-                    if (loopholeSynopsis.contains(version.toString())) {
-                        resultfinal.add(bugReport);
-                        effectiveSet++;
-                    }
+                //产品版本
+                for (Object versionObject : versionArray) {
+                        try {
+                            List<String> participleList = ParticipleUtil.getParticipleList(loopholeSynopsis);
+                            boolean code = ParticipleUtil.matchVersion(versionObject.toString(), participleList);
+                            if (code) {
+                                resultfinal.add(bugReport);
+                                effectiveSet++;
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                 }
                 sun++;
             }
@@ -164,10 +166,10 @@ public class main {
          *
          *   xxxx及之前 代表小于等于xxxx版本,   aaaa至bbbb 代表 大于等于 aaaa版本小于等于 bbbb版本  ，aaa之前  代表小于aaa版本
          */
-        /*for (BugReport bugReport : resultfinal) {
-            System.err.println(bugReport);
-        }*/
         System.out.println("漏洞总数：" + sun + "，匹配漏洞数：" + effectiveSet);
+        for (BugReport bugReport:resultfinal){
+            System.out.println(bugReport);
+        }
 
     }
 }
