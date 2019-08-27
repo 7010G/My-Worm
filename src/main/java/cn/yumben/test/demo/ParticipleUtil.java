@@ -58,16 +58,19 @@ public class ParticipleUtil {
                     for (int i = 0; i < split.length; i++) {
                         stringArrayList.add(split[i].replaceAll("[a-zA-Z + - 中]", ""));
                     }
+                    //截取如5.5.0-5.5.35 的版本号一个while循环只包含一组
                 } else if (lexemeText.contains("-")) {
                     String[] split = lexemeText.split("-");
                     for (int i = 0; i < split.length; i++) {
                         if (i + 1 != split.length) {
-                            if (pattern.matcher(split[i]).matches() && pattern.matcher(split[+1]).matches() && split[+1].contains(".")) {
+                            if (pattern.matcher(split[i]).matches() && pattern.matcher(split[i + 1]).matches() && split[i + 1].contains(".")) {
                                 stringArrayList.add(split[i].replaceAll("[a-zA-Z + - 中]", ""));
                                 stringArrayList.add("至");
-                            } else {
+                            }else{
                                 stringArrayList.add(split[i].replaceAll("[a-zA-Z + - 中]", ""));
                             }
+                        }else{
+                            stringArrayList.add(split[i].replaceAll("[a-zA-Z + - 中]", ""));
                         }
                     }
                 } else {
@@ -117,6 +120,7 @@ public class ParticipleUtil {
                     } else if (homographsText.equals("至") || homographsText.equals("到")) {
                         if (i + 2 < stringArrayList.size()) {
                             String versionText = stringArrayList.get(i + 2);
+                            //避免出现因截取失误而出现的异常 如 1.0至至至
                             if (pattern.matcher(versionText).matches()) {
                                 Double end = getVersion(versionText);
                                 if (doubleVersion <= version && version <= end) {
