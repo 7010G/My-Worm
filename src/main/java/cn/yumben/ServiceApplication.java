@@ -1,5 +1,10 @@
-package cn.yumben.test.demo;
+package cn.yumben;
 
+import cn.yumben.common.*;
+import cn.yumben.pojo.BugReport;
+import cn.yumben.util.*;
+import cn.yumben.util.Cnnvd.JsoupUtil;
+import cn.yumben.util.Cnnvd.ParticipleUtil;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +20,7 @@ import java.util.List;
  *
  * @author zzg
  */
-public class main {
+public class ServiceApplication {
 
     private static HashMap<String, ArrayList<BugReport>> hashMap = new HashMap<>();
     /**
@@ -23,7 +28,7 @@ public class main {
      */
     private static JSONArray productNameList = ConfigUtil.getValues("SZS", "ProductList");
 
-    private final static Logger logger = LoggerFactory.getLogger(main.class);
+    private final static Logger logger = LoggerFactory.getLogger(ServiceApplication.class);
 
     public static void main(String[] args) throws InterruptedException {
         Date a = new Date();

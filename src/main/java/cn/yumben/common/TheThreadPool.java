@@ -1,4 +1,4 @@
-package cn.yumben.test.demo;
+package cn.yumben.common;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;

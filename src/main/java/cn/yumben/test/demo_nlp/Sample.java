@@ -1,4 +1,4 @@
-package cn.yumben.test.demo;
+package cn.yumben.test.demo_nlp;
 
 import com.baidu.aip.nlp.AipNlp;
 import org.json.JSONObject;

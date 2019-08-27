@@ -1,4 +1,4 @@
-package cn.yumben.test.demo;
+package cn.yumben.common;
 
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 

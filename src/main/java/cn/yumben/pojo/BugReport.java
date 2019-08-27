@@ -1,4 +1,4 @@
-package cn.yumben.test.demo;
+package cn.yumben.pojo;
 
 
 import java.util.List;
