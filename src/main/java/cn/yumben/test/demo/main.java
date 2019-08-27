@@ -1,6 +1,8 @@
 package cn.yumben.test.demo;
 
 import org.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,9 +18,12 @@ import java.util.List;
 public class main {
 
     private static HashMap<String, ArrayList<BugReport>> hashMap = new HashMap<>();
-    //初始化产品集
+    /**
+     * 初始化产品集
+     */
     private static JSONArray productNameList = ConfigUtil.getValues("SZS", "ProductList");
 
+    private final static Logger logger = LoggerFactory.getLogger(main.class);
 
     public static void main(String[] args) throws InterruptedException {
         Date a = new Date();
@@ -33,7 +38,6 @@ public class main {
     public static void postTest() throws InterruptedException {
         String url = "http://www.cnnvd.org.cn/web/vulnerability/queryLds.tag";
 
-        System.out.println();
         //使用Lambda表达式实现多线程闭包
         for (int i = 0; i < productNameList.length(); i++) {
             String productName = productNameList.get(i).toString();
@@ -46,28 +50,24 @@ public class main {
         }
         while (true) {
             int queueSize = TheThreadPool.getThreadPool().getQueue().size();
-            System.err.println("当前排队线程数：" + queueSize);
+            logger.info("当前排队线程数：" + queueSize);
 
             int activeCount = TheThreadPool.getThreadPool().getActiveCount();
-            System.err.println("当前活动线程数：" + activeCount);
+            logger.info("当前活动线程数：" + activeCount);
 
             long completedTaskCount = TheThreadPool.getThreadPool().getCompletedTaskCount();
-            System.err.println("执行完成线程数：" + completedTaskCount);
+            logger.info("执行完成线程数：" + completedTaskCount);
 
             long taskCount = TheThreadPool.getThreadPool().getTaskCount();
-            System.err.println("总线程数：" + taskCount);
+            logger.info("总线程数：" + taskCount);
+
 
             Thread.sleep(1000);
             if (TheThreadPool.getThreadPool().getActiveCount() == 0) {
                 TheThreadPool.getThreadPool().shutdown();
-               /* for (BugReport bugReport : bugReportsList) {
-                    System.out.println(bugReport.toString());
-                }*/
                 for (int a = 0; a < productNameList.length(); a++) {
-                    System.out.println(productNameList.get(a));
+                    logger.info(productNameList.get(a).toString());
                 }
-                //System.out.println("漏洞总数：" + bugReportsList.size());
-
                 break;
             }
         }
@@ -92,7 +92,7 @@ public class main {
 
         for (int i = 0; i < split.size(); i++) {
             int queueSize = TheThreadPool.getThreadPool().getQueue().size();
-            System.err.println("当前排队线程数：" + queueSize);
+            logger.info("当前排队线程数：" + queueSize);
             //如果当前排队线程数等于 等待列队的大小，则休眠1s
             if (queueSize == TheThreadPool.CAPACITY) {
                 try {
@@ -166,9 +166,9 @@ public class main {
          *
          *   xxxx及之前 代表小于等于xxxx版本,   aaaa至bbbb 代表 大于等于 aaaa版本小于等于 bbbb版本  ，aaa之前  代表小于aaa版本
          */
-        System.out.println("漏洞总数：" + sun + "，匹配漏洞数：" + effectiveSet);
+        logger.info("漏洞总数：" + sun + "，匹配漏洞数：" + effectiveSet);
         for (BugReport bugReport:resultfinal){
-            System.out.println(bugReport);
+            logger.info(bugReport.toString());
         }
 
     }

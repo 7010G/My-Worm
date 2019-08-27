@@ -3,6 +3,8 @@ package cn.yumben.test.demo;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,12 +25,12 @@ import java.io.IOException;
  */
 
 public class ConfigUtil {
-
+    private final static Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
     private static final String URL = ConfigUtil.class.getClassLoader().getResource("Product.json").getPath();
 
     /* 获得json配置文件 */
     public static JSONObject getJSONObject() {
-        System.out.println(URL);
+        logger.info(URL);
         File file = new File(URL);
         JSONObject jsonObject = null;
         try {

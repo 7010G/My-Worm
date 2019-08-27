@@ -1,5 +1,7 @@
 package cn.yumben.test.demo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
 
@@ -21,6 +23,8 @@ import static java.lang.Double.parseDouble;
  * @version: 1.0
  */
 public class ParticipleUtil {
+
+    private final static Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
 
     /**
      * 分词
@@ -66,10 +70,10 @@ public class ParticipleUtil {
                             if (pattern.matcher(split[i]).matches() && pattern.matcher(split[i + 1]).matches() && split[i + 1].contains(".")) {
                                 stringArrayList.add(split[i].replaceAll("[a-zA-Z + - 中]", ""));
                                 stringArrayList.add("至");
-                            }else{
+                            } else {
                                 stringArrayList.add(split[i].replaceAll("[a-zA-Z + - 中]", ""));
                             }
-                        }else{
+                        } else {
                             stringArrayList.add(split[i].replaceAll("[a-zA-Z + - 中]", ""));
                         }
                     }
@@ -85,8 +89,9 @@ public class ParticipleUtil {
                 }
             }
         }
+        System.out.println();
         for (String s : stringArrayList) {
-            System.out.println(s);
+           logger.info(s);
         }
         return stringArrayList;
     }
@@ -101,13 +106,13 @@ public class ParticipleUtil {
     public static boolean matchVersion(String versionObject, List<String> stringArrayList) {
         Pattern pattern = Pattern.compile(".*\\d+.*");
         double version = getVersion(versionObject);
-        System.out.println("versionObject:" + version);
+        logger.info("versionObject:" + version);
         for (int i = 0; i < stringArrayList.size(); i++) {
             if (stringArrayList.size() > 1 && i + 1 != stringArrayList.size()) {
                 String listVersion = stringArrayList.get(i);
                 String homographsText = stringArrayList.get(i + 1);
                 if (listVersion.contains(".")) {
-                    System.out.println("listVersion:" + listVersion);
+                    logger.info("listVersion:" + listVersion);
                     double doubleVersion = getVersion(listVersion);
                     if (homographsText.equals("之前")) {
                         if (doubleVersion > version) {
