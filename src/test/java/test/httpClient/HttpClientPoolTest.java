@@ -1,4 +1,4 @@
-package cn.yumben.test.httpClient;
+package test.httpClient;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;

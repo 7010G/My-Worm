@@ -1,8 +1,8 @@
-package cn.yumben.test.httpClient;
+package test.httpClient;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -11,21 +11,21 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class HttpPostTest {
+public class HttpGetTest {
 
     public static void main(String[] args) throws URISyntaxException {
         //HttpClients对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
         //设置请求地址
         URIBuilder uriBuilder = new URIBuilder("https://github.com/apache/kafka");
-        HttpPost httpPost = null;
+        HttpGet httpGet = null;
         //创建HttpGet对象，设置请求参数
-        httpPost = new HttpPost(uriBuilder.build());
+        httpGet = new HttpGet(uriBuilder.build());
 
         CloseableHttpResponse execute = null;
         try {
             //使用HttpClients发起请求，获取Response
-            execute = httpClient.execute(httpPost);
+            execute = httpClient.execute(httpGet);
             //解析响应
             if (execute.getStatusLine().getStatusCode() == 200) {
                 HttpEntity entity = execute.getEntity();
@@ -38,9 +38,7 @@ public class HttpPostTest {
             e.printStackTrace();
         } finally {
             try {
-                if (execute!=null){
-                    execute.close();
-                }
+                execute.close();
                 httpClient.close();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -49,7 +49,7 @@ public class ServiceApplication {
 
             hashMap.put(productName, new ArrayList<BugReport>());
             //解析详情页链接
-            Runnable run_1 = () -> run_1(productName, url);
+            Runnable run_1 = () ->run_1(productName, url);
             TheThreadPool.getThreadPool().execute(run_1);
 
         }
@@ -116,8 +116,8 @@ public class ServiceApplication {
 
     /**
      * 解析详情页数据实体对象
-     *
      * @param split 被平均拆分的部分详情链接
+     * @param productName 产品名称
      */
     public static void run_2(List<String> split, String productName) {
 

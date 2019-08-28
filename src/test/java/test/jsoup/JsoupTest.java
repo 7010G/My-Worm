@@ -1,4 +1,4 @@
-package cn.yumben.test.jsoup;
+package test.jsoup;
 
 
 import org.apache.commons.io.FileUtils;

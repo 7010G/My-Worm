@@ -67,7 +67,9 @@ public class ParticipleUtil {
                 } else if (lexemeText.contains("-")) {
                     String[] split = lexemeText.split("-");
                     for (int i = 0; i < split.length; i++) {
+                        //如果不是最后一个
                         if (i + 1 != split.length) {
+                            //按照-拆分的 如 7.0.1-7.0.5 数据结构为[7.0.1,7.0.5]
                             if (pattern.matcher(split[i]).matches() && pattern.matcher(split[i + 1]).matches() && split[i + 1].contains(".")) {
                                 stringArrayList.add(split[i].replaceAll("[a-zA-Z + - 中]", ""));
                                 stringArrayList.add("至");
@@ -92,7 +94,7 @@ public class ParticipleUtil {
         }
         System.out.println();
         for (String s : stringArrayList) {
-           logger.info(s);
+            logger.info(s);
         }
         return stringArrayList;
     }
