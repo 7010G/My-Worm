@@ -1,6 +1,7 @@
 package test.demo_nlp;
 
 import com.baidu.aip.nlp.AipNlp;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -18,7 +19,7 @@ public class Sample {
     public static final String API_KEY = "8p2fNZ5RVF2NyQMIGK39Hqwh";
     public static final String SECRET_KEY = "6gDKkW7nAGdrhRqp0dAjzWjmLv5L7dQX";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JSONException {
         // 初始化一个AipNlp
         AipNlp client = new AipNlp(APP_ID, API_KEY, SECRET_KEY);
 
