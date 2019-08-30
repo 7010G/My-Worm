@@ -11,7 +11,7 @@
     <groupId>com.yumben</groupId>
     <artifactId>my_worm</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>my_worm</name>
     <description>根据产品名称和指定版本生成漏洞报告</description>
 
@@ -189,7 +189,7 @@
                 <!-- devtools -->
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>com.yumben.org.MyWormApplication</mainClass>
+                    <mainClass>cn.yumben.ServiceApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

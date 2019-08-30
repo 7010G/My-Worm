@@ -24,7 +24,7 @@ public class Controller_cnnvd {
     @Resource
     Service_cnnvd service_cnnvd;
 
-    @RequestMapping(value = "/getDate", method = RequestMethod.GET)
+    @RequestMapping(value = "/getData", method = RequestMethod.GET)
     @ResponseBody
     public String showData(String name, String version) throws InterruptedException {
 
