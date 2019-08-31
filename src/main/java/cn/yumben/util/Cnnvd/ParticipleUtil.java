@@ -25,7 +25,7 @@ import static java.lang.Double.parseDouble;
  */
 public class ParticipleUtil {
 
-    private final static Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
+    private final  Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
 
     /**
      * 分词
@@ -34,7 +34,7 @@ public class ParticipleUtil {
      * @return 分词结果
      * @throws IOException
      */
-    public static List<String> getParticipleList(String content) throws IOException {
+    public  List<String> getParticipleList(String content) throws IOException {
         Pattern pattern = Pattern.compile(".*\\d+.*");
         //歧义词组
         ArrayList<String> homographs = new ArrayList<String>();
@@ -106,7 +106,7 @@ public class ParticipleUtil {
      * @param stringArrayList 漏洞报告内的版本信息
      * @return
      */
-    public static boolean matchVersion(String versionObject, List<String> stringArrayList) {
+    public  boolean matchVersion(String versionObject, List<String> stringArrayList) {
         Pattern pattern = Pattern.compile(".*\\d+.*");
         double version = getVersion(versionObject);
         logger.info("versionObject:" + version);
@@ -152,7 +152,7 @@ public class ParticipleUtil {
      * @param versionText 版本号String
      * @return 版本号Double
      */
-    public static Double getVersion(String versionText) {
+    public  Double getVersion(String versionText) {
         Double version = null;
         int count = (versionText.length() - versionText.replace(".", "").length()) / ".".length();
         StringBuilder stringBuilder = new StringBuilder(versionText);

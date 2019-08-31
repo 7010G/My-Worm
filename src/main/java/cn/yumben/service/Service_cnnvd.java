@@ -11,6 +11,7 @@ import cn.yumben.util.ListDeal;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -27,19 +28,18 @@ import java.util.List;
  * @author: ZZG
  * @version: 1.0
  */
-@Service
 public class Service_cnnvd {
 
-    private static HashMap<String, ArrayList<BugReport>> hashMap = new HashMap<>();
+    private  HashMap<String, ArrayList<BugReport>> hashMap = new HashMap<>();
     /**
      * 初始化产品集
      */
-    private static JSONArray productNameList = null;
+    private  JSONArray productNameList = null;
 
-    private final static Logger logger = LoggerFactory.getLogger(ServiceApplication.class);
+    private  Logger logger = LoggerFactory.getLogger(ServiceApplication.class);
 
-    private String NAME = null;
-    private String VERSION = null;
+    private  String NAME = null;
+    private  String VERSION = null;
 
     /**
      * 获取初始信息完成自动翻页
@@ -49,7 +49,7 @@ public class Service_cnnvd {
      * @return
      * @throws InterruptedException
      */
-    public List<BugReport> postTest(String name, String version) throws InterruptedException {
+    public  List<BugReport> postTest(String name, String version) throws InterruptedException {
         String url = "http://www.cnnvd.org.cn/web/vulnerability/queryLds.tag";
         if (null != name && null != version) {
             NAME = name;
@@ -58,6 +58,29 @@ public class Service_cnnvd {
             //解析详情页链接
             Runnable run_1 = () -> run_1(NAME, url);
             TheThreadPool.getThreadPool().execute(run_1);
+            while (true) {
+                int queueSize = TheThreadPool.getThreadPool().getQueue().size();
+                logger.info("当前排队线程数：" + queueSize);
+
+                int activeCount = TheThreadPool.getThreadPool().getActiveCount();
+                logger.info("当前活动线程数：" + activeCount);
+
+                long completedTaskCount = TheThreadPool.getThreadPool().getCompletedTaskCount();
+                logger.info("执行完成线程数：" + completedTaskCount);
+
+                long taskCount = TheThreadPool.getThreadPool().getTaskCount();
+                logger.info("总线程数：" + taskCount);
+
+
+                Thread.sleep(5000);
+                if (TheThreadPool.getThreadPool().getActiveCount() == 0) {
+                    //TheThreadPool.getThreadPool().shutdown();
+                /*for (int a = 0; a < productNameList.length(); a++) {
+                    logger.info(productNameList.get(a).toString());
+                }*/
+                    break;
+                }
+            }
         } else {
             productNameList = ConfigUtil.getValues("SZS", "ProductList");
 
@@ -71,30 +94,31 @@ public class Service_cnnvd {
                 TheThreadPool.getThreadPool().execute(run_1);
 
             }
-        }
-        while (true) {
-            int queueSize = TheThreadPool.getThreadPool().getQueue().size();
-            logger.info("当前排队线程数：" + queueSize);
+            while (true) {
+                int queueSize = TheThreadPool.getThreadPool().getQueue().size();
+                logger.info("当前排队线程数：" + queueSize);
 
-            int activeCount = TheThreadPool.getThreadPool().getActiveCount();
-            logger.info("当前活动线程数：" + activeCount);
+                int activeCount = TheThreadPool.getThreadPool().getActiveCount();
+                logger.info("当前活动线程数：" + activeCount);
 
-            long completedTaskCount = TheThreadPool.getThreadPool().getCompletedTaskCount();
-            logger.info("执行完成线程数：" + completedTaskCount);
+                long completedTaskCount = TheThreadPool.getThreadPool().getCompletedTaskCount();
+                logger.info("执行完成线程数：" + completedTaskCount);
 
-            long taskCount = TheThreadPool.getThreadPool().getTaskCount();
-            logger.info("总线程数：" + taskCount);
+                long taskCount = TheThreadPool.getThreadPool().getTaskCount();
+                logger.info("总线程数：" + taskCount);
 
 
-            Thread.sleep(1000);
-            if (TheThreadPool.getThreadPool().getActiveCount() == 0) {
-                TheThreadPool.getThreadPool().shutdown();
+                Thread.sleep(1000);
+                if (TheThreadPool.getThreadPool().getActiveCount() == 0) {
+                    //TheThreadPool.getThreadPool().shutdown();
                 /*for (int a = 0; a < productNameList.length(); a++) {
                     logger.info(productNameList.get(a).toString());
                 }*/
-                break;
+                    break;
+                }
             }
         }
+
         List<BugReport> bugReports = dataSet();
         return bugReports;
     }
@@ -105,7 +129,7 @@ public class Service_cnnvd {
      * @param productName 查询条件
      * @param url         爬取地址
      */
-    public void run_1(String productName, String url) {
+    public  void run_1(String productName, String url) {
 
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("qcvCname", productName);
@@ -140,7 +164,7 @@ public class Service_cnnvd {
      * @param split       被平均拆分的部分详情链接
      * @param productName 产品名称
      */
-    public void run_2(List<String> split, String productName) {
+    public  void run_2(List<String> split, String productName) {
 
         List<BugReport> bugReports = new JsoupUtil().parsedetailsUrl(split);
         for (BugReport bugReport : bugReports) {
@@ -151,7 +175,7 @@ public class Service_cnnvd {
     /**
      * 将结果集数据与配置文件数据进行对比返回匹配项
      */
-    public List<BugReport> dataSet() {
+    public  List<BugReport> dataSet() {
         //总数
         int sun = 0;
         //有效集
@@ -209,6 +233,8 @@ public class Service_cnnvd {
         for (BugReport bugReport : resultfinal) {
             logger.info(bugReport.toString());
         }
+        NAME=null;
+        VERSION=null;
         return resultfinal;
     }
 
@@ -216,11 +242,12 @@ public class Service_cnnvd {
      * 匹配版本号
      * @return
      */
-    public boolean versionVS(String loopholeSynopsis,String version ){
+    public  boolean versionVS(String loopholeSynopsis,String version ){
         boolean code=false;
+        ParticipleUtil participleUtil = new ParticipleUtil();
         try {
-            List<String> participleList = ParticipleUtil.getParticipleList(loopholeSynopsis);
-            code= ParticipleUtil.matchVersion(version, participleList);
+            List<String> participleList = participleUtil.getParticipleList(loopholeSynopsis);
+            code= participleUtil.matchVersion(version, participleList);
         } catch (IOException e) {
             e.printStackTrace();
         }
