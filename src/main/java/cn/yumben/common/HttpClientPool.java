@@ -1,5 +1,7 @@
 package cn.yumben.common;
 
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 /**
@@ -8,6 +10,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 public class HttpClientPool {
 
     private static PoolingHttpClientConnectionManager connectionManager = null;
+    private static CloseableHttpClient httpClient =null;
 
     public static PoolingHttpClientConnectionManager getConnectionManager() {
 
@@ -22,6 +25,7 @@ public class HttpClientPool {
                 connectionManager.setDefaultMaxPerRoute(500);
             }
         }
+         //httpClient = HttpClients.createDefault();
         return connectionManager;
     }
 

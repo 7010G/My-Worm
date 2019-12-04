@@ -40,9 +40,9 @@ public class Controller_cnnvd {
     @RequestMapping(value = "/getData", method = RequestMethod.GET)
     @ResponseBody
     public String showData(String name, String version, HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
-        if(null==name&&null==version){
-           return "参数为空";
-        }else {
+        //if(null==name&&null==version){
+         //  return "参数为空";
+       // }else {
             List<BugReport> bugReports = new Service_cnnvd().postTest(name, version);
             List<Map<String, String>> result = new ArrayList<>();
             for (BugReport bugReport : bugReports) {
@@ -59,6 +59,10 @@ public class Controller_cnnvd {
                 map.put("source", bugReport.getSource());
                 map.put("loopholeSynopsis", bugReport.getLoopholeSynopsis());
                 result.add(map);
+            }
+            if(null==name){
+                name="默认配置";
+                version="All";
             }
             String date = DateTool.formatDate(new Date());
             String fileName = (name + version + "漏洞报告" + date);        // 定义文件名
@@ -98,7 +102,7 @@ public class Controller_cnnvd {
             outputStream.close();
             wb.close();
             return "OK";
-        }
+        //}
     }
 
 }

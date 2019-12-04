@@ -1,13 +1,14 @@
 package cn.yumben.util;
 
-import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Copyright © 2018yunben. All rights reserved.
@@ -26,20 +27,18 @@ import java.io.IOException;
 
 public class ConfigUtil {
     private final static Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
-    private static final String URL = ConfigUtil.class.getClassLoader().getResource("Product.json").getPath();
+    private static  String CONTENT;
 
-    /* 获得json配置文件 */
+    static {
+        InputStream resourceAsStream = ConfigUtil.class.getResourceAsStream("/Product.json");
+        CONTENT = toConvertString(resourceAsStream).trim();
+    }
+    /**
+     *  获得json配置文件
+     *  */
     public static JSONObject getJSONObject() {
-        logger.info(URL);
-        File file = new File(URL);
-        JSONObject jsonObject = null;
-        try {
-            String content = FileUtils.readFileToString(file, "utf-8");
-            jsonObject = new JSONObject(content);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        logger.info(CONTENT);
+        JSONObject jsonObject = new JSONObject(CONTENT);
         return jsonObject;
     }
 
@@ -56,5 +55,45 @@ public class ConfigUtil {
         JSONArray jsonArray = object.getJSONArray(valueName);
         return jsonArray;
     }
+
+    /**
+     * 将一个InputStream流转换成字符串
+     *
+     * @param is
+     * @return
+     */
+    public static String toConvertString(InputStream is) {
+        StringBuffer res = new StringBuffer();
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader read = new BufferedReader(isr);
+        try {
+            String line;
+            line = read.readLine();
+            while (line != null) {
+                res.append(line + "");
+                line = read.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != isr) {
+                    isr.close();
+                    isr.close();
+                }
+                if (null != read) {
+                    read.close();
+                    read = null;
+                }
+                if (null != is) {
+                    is.close();
+                    is = null;
+                }
+            } catch (IOException e) {
+            }
+        }
+        return res.toString();
+    }
+
 
 }

@@ -49,6 +49,7 @@ public class HttpClientUtil {
      */
     public String getRequest(String url, HashMap<String, String> param) {
         CloseableHttpClient HttpClient = HttpClients.custom().setConnectionManager(HttpClientPool.getConnectionManager()).build();
+        //CloseableHttpClient HttpClient=HttpClientPool.getConnectionManager();
         //请求返回实体
         String content = null;
         try {
@@ -84,7 +85,8 @@ public class HttpClientUtil {
      * @return
      */
     public String postRequest(String url, HashMap<String, String> param) {
-        CloseableHttpClient HttpClient = HttpClients.custom().setConnectionManager(HttpClientPool.getConnectionManager()).build();
+         CloseableHttpClient HttpClient = HttpClients.custom().setConnectionManager(HttpClientPool.getConnectionManager()).build();
+        //CloseableHttpClient HttpClient=HttpClientPool.getConnectionManager();
         //请求返回实体
         String content = null;
         //声明List集合，封装表单中的参数
@@ -132,6 +134,7 @@ public class HttpClientUtil {
      */
     private String parseTheResponse(HttpGet httpGet, HttpPost httpPost) throws IOException {
         CloseableHttpClient HttpClient = HttpClients.custom().setConnectionManager(HttpClientPool.getConnectionManager()).build();
+        //CloseableHttpClient HttpClient=HttpClientPool.getConnectionManager();
         String content = null;
         CloseableHttpResponse response = null;
         if (httpGet != null) {
@@ -160,7 +163,8 @@ public class HttpClientUtil {
      * @return
      */
     public boolean imageDownload(String url) {
-        CloseableHttpClient HttpClient = HttpClients.custom().setConnectionManager(HttpClientPool.getConnectionManager()).build();
+         CloseableHttpClient HttpClient = HttpClients.custom().setConnectionManager(HttpClientPool.getConnectionManager()).build();
+        //CloseableHttpClient HttpClient=HttpClientPool.getConnectionManager();
         CloseableHttpResponse execute = null;
         //配置请求地址和请求参数
         URIBuilder uriBuilder = null;

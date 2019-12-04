@@ -110,10 +110,6 @@ public class Service_cnnvd {
 
                 Thread.sleep(1000);
                 if (TheThreadPool.getThreadPool().getActiveCount() == 0) {
-                    //TheThreadPool.getThreadPool().shutdown();
-                /*for (int a = 0; a < productNameList.length(); a++) {
-                    logger.info(productNameList.get(a).toString());
-                }*/
                     break;
                 }
             }
