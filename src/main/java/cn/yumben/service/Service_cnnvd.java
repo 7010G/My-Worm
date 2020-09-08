@@ -11,7 +11,6 @@ import cn.yumben.util.ListDeal;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,18 +27,18 @@ import java.util.List;
  * @author: ZZG
  * @version: 1.0
  */
-public class Service_cnnvd {
+public class Service_cnnvd implements Service_cnnvd_interface {
 
-    private  HashMap<String, ArrayList<BugReport>> hashMap = new HashMap<>();
+    private HashMap<String, ArrayList<BugReport>> hashMap = new HashMap<>();
     /**
      * 初始化产品集
      */
-    private  JSONArray productNameList = null;
+    private JSONArray productNameList = null;
 
-    private  Logger logger = LoggerFactory.getLogger(ServiceApplication.class);
+    private Logger logger = LoggerFactory.getLogger(ServiceApplication.class);
 
-    private  String NAME = null;
-    private  String VERSION = null;
+    private String NAME = null;
+    private String VERSION = null;
 
     /**
      * 获取初始信息完成自动翻页
@@ -49,7 +48,7 @@ public class Service_cnnvd {
      * @return
      * @throws InterruptedException
      */
-    public  List<BugReport> postTest(String name, String version) throws InterruptedException {
+    public List<BugReport> postTest(String name, String version) throws InterruptedException {
         String url = "http://www.cnnvd.org.cn/web/vulnerability/queryLds.tag";
         if (null != name && null != version) {
             NAME = name;
@@ -125,7 +124,7 @@ public class Service_cnnvd {
      * @param productName 查询条件
      * @param url         爬取地址
      */
-    public  void run_1(String productName, String url) {
+    public void run_1(String productName, String url) {
 
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("qcvCname", productName);
@@ -160,7 +159,7 @@ public class Service_cnnvd {
      * @param split       被平均拆分的部分详情链接
      * @param productName 产品名称
      */
-    public  void run_2(List<String> split, String productName) {
+    public void run_2(List<String> split, String productName) {
 
         List<BugReport> bugReports = new JsoupUtil().parsedetailsUrl(split);
         for (BugReport bugReport : bugReports) {
@@ -171,7 +170,7 @@ public class Service_cnnvd {
     /**
      * 将结果集数据与配置文件数据进行对比返回匹配项
      */
-    public  List<BugReport> dataSet() {
+    public List<BugReport> dataSet() {
         //总数
         int sun = 0;
         //有效集
@@ -196,7 +195,7 @@ public class Service_cnnvd {
                     String loopholeSynopsis = bugReport.getLoopholeSynopsis();
                     //产品版本
                     for (Object versionObject : versionArray) {
-                        if (versionVS(loopholeSynopsis,versionObject.toString())) {
+                        if (versionVS(loopholeSynopsis, versionObject.toString())) {
                             resultfinal.add(bugReport);
                             effectiveSet++;
                         }
@@ -204,7 +203,7 @@ public class Service_cnnvd {
                     sun++;
                 }
             }
-        }else{
+        } else {
             //根据产品名称获取单个产品的漏洞集
             ArrayList<BugReport> arrayList = hashMap.get(NAME);
             //循环对比漏洞信息
@@ -213,7 +212,7 @@ public class Service_cnnvd {
                 //漏洞简介
                 String loopholeSynopsis = bugReport.getLoopholeSynopsis();
                 //产品版本
-                if (versionVS(loopholeSynopsis,VERSION)) {
+                if (versionVS(loopholeSynopsis, VERSION)) {
                     resultfinal.add(bugReport);
                     effectiveSet++;
                 }
@@ -229,21 +228,22 @@ public class Service_cnnvd {
         for (BugReport bugReport : resultfinal) {
             logger.info(bugReport.toString());
         }
-        NAME=null;
-        VERSION=null;
+        NAME = null;
+        VERSION = null;
         return resultfinal;
     }
 
     /**
      * 匹配版本号
+     *
      * @return
      */
-    public  boolean versionVS(String loopholeSynopsis,String version ){
-        boolean code=false;
+    public boolean versionVS(String loopholeSynopsis, String version) {
+        boolean code = false;
         ParticipleUtil participleUtil = new ParticipleUtil();
         try {
             List<String> participleList = participleUtil.getParticipleList(loopholeSynopsis);
-            code= participleUtil.matchVersion(version, participleList);
+            code = participleUtil.matchVersion(version, participleList);
         } catch (IOException e) {
             e.printStackTrace();
         }

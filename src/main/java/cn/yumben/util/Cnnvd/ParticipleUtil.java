@@ -162,7 +162,7 @@ public class ParticipleUtil {
             String replaceContent = stringBuilder.replace(i, i + 1, "").toString();
             version = parseDouble(replaceContent);
         } else if (count > 2) {
-            String replaceContent = stringBuilder.replace(i, stringBuilder.length(), "").toString();
+            String replaceContent = stringBuilder.replace(i,i + 1, "").toString();
             version = getVersion(replaceContent);
         } else if (count < 2) {
             version = parseDouble(versionText);
