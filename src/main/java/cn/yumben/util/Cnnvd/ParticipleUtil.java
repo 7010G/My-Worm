@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static java.lang.Double.parseDouble;
@@ -35,6 +36,7 @@ public class ParticipleUtil {
      * @throws IOException
      */
     public  List<String> getParticipleList(String content) throws IOException {
+        //匹配数字
         Pattern pattern = Pattern.compile(".*\\d+.*");
         //歧义词组
         ArrayList<String> homographs = new ArrayList<String>();
@@ -42,6 +44,7 @@ public class ParticipleUtil {
         homographs.add("及之前");
         homographs.add("之前");
         homographs.add("到");
+        homographs.add("之前的");
 
         ArrayList<String> stringArrayList = new ArrayList<>();
         //使用lucene实现
@@ -49,14 +52,14 @@ public class ParticipleUtil {
         //开始分词
         StringReader sr = new StringReader(text);
         IKSegmenter ik = new IKSegmenter(sr, true);
-        Lexeme lex = null;
+        Lexeme lex;
         while ((lex = ik.next()) != null) {
             String lexemeText = lex.getLexemeText();
             System.out.print(lexemeText + "|");
             //计算.出现的次数
             int count = (lexemeText.length() - lexemeText.replace(".", "").length()) / ".".length();
             //截取版本号
-            if (pattern.matcher(lexemeText).matches() && lexemeText.length() > 2 && count > 1) {
+            if (pattern.matcher(lexemeText).matches() && lexemeText.length() >= 2 && count >= 1) {
 
                 if (lexemeText.contains(",")) {
                     String[] split = lexemeText.split(",");
@@ -107,6 +110,7 @@ public class ParticipleUtil {
      * @return
      */
     public  boolean matchVersion(String versionObject, List<String> stringArrayList) {
+        //匹配数字
         Pattern pattern = Pattern.compile(".*\\d+.*");
         double version = getVersion(versionObject);
         logger.info("versionObject:" + version);
@@ -137,6 +141,16 @@ public class ParticipleUtil {
                             }
                         }
 
+                    }else if (homographsText.equals("之前的")){
+                        if (i + 2 < stringArrayList.size()) {
+                            String versionText = stringArrayList.get(i + 2);
+                            if (pattern.matcher(versionText).matches()) {
+                                Double end = getVersion(versionText);
+                                if (doubleVersion > version && version >= end && Objects.equals(getVersion(versionObject.substring(0, 1)), getVersion(versionText.substring(0, 1)))) {
+                                    return true;
+                                }
+                            }
+                        }
                     }
                 }
             } else {
