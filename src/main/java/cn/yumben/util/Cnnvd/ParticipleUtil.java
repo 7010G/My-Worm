@@ -60,7 +60,7 @@ public class ParticipleUtil {
             int count = (lexemeText.length() - lexemeText.replace(".", "").length()) / ".".length();
             //截取版本号
             if (pattern.matcher(lexemeText).matches() && lexemeText.length() >= 2 && count >= 1) {
-
+                //截取如7.0.0,7.0.93的版本号
                 if (lexemeText.contains(",")) {
                     String[] split = lexemeText.split(",");
                     for (int i = 0; i < split.length; i++) {
@@ -76,8 +76,6 @@ public class ParticipleUtil {
                             if (pattern.matcher(split[i]).matches() && pattern.matcher(split[i + 1]).matches() && split[i + 1].contains(".")) {
                                 stringArrayList.add(split[i].replaceAll("[a-zA-Z + - 中]", ""));
                                 stringArrayList.add("至");
-                            } else {
-                                stringArrayList.add(split[i].replaceAll("[a-zA-Z + - 中]", ""));
                             }
                         } else {
                             stringArrayList.add(split[i].replaceAll("[a-zA-Z + - 中]", ""));
@@ -95,7 +93,6 @@ public class ParticipleUtil {
                 }
             }
         }
-        System.out.println();
         for (String s : stringArrayList) {
             logger.info(s);
         }
