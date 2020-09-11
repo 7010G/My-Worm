@@ -8,12 +8,15 @@ import cn.yumben.util.ExcelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -34,6 +37,8 @@ import java.util.*;
 @Scope("prototype")
 public class Controller_cnnvd {
 
+    @Resource(name = "service_cnnvd")
+    private Service_cnnvd_interface service_cnnvd_interface;
 
     @RequestMapping(value = "/getData", method = RequestMethod.GET)
     @ResponseBody
@@ -41,7 +46,7 @@ public class Controller_cnnvd {
         //if(null==name&&null==version){
         //  return "参数为空";
         // }else {
-        List<BugReport> bugReports = new Service_cnnvd().postTest(name, version);
+        List<BugReport> bugReports = service_cnnvd_interface.postTest(name, version);
         List<Map<String, String>> result = new ArrayList<>();
         for (BugReport bugReport : bugReports) {
             Map<String, String> map = new LinkedHashMap<>();
@@ -105,9 +110,9 @@ public class Controller_cnnvd {
 
     @RequestMapping(value = "/versionVS", method = RequestMethod.POST)
     @ResponseBody
-    public boolean versionVS(String loopholeSynopsis,String version ) {
-        Service_cnnvd_interface service_cnnvd = new Service_cnnvd();
-        boolean b = service_cnnvd.versionVS(loopholeSynopsis, version);
+    public boolean versionVS(String loopholeSynopsis, String version) {
+
+        boolean b = service_cnnvd_interface.versionVS(loopholeSynopsis, version);
         return b;
     }
 

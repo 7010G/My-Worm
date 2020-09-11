@@ -3,6 +3,7 @@ package cn.yumben.util.Cnnvd;
 import cn.yumben.util.ConfigUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
 

@@ -11,6 +11,7 @@ import cn.yumben.util.ListDeal;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -27,9 +28,12 @@ import java.util.List;
  * @author: ZZG
  * @version: 1.0
  */
+@Service
+@Scope("prototype")
 public class Service_cnnvd implements Service_cnnvd_interface {
 
     private HashMap<String, ArrayList<BugReport>> hashMap = new HashMap<>();
+
     /**
      * 初始化产品集
      */
@@ -239,6 +243,7 @@ public class Service_cnnvd implements Service_cnnvd_interface {
      * @return
      */
     public boolean versionVS(String loopholeSynopsis, String version) {
+
         boolean code = false;
         ParticipleUtil participleUtil = new ParticipleUtil();
         try {
