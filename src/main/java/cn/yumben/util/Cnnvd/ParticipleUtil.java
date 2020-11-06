@@ -116,7 +116,7 @@ public class ParticipleUtil {
             if (stringArrayList.size() > 1 && i + 1 != stringArrayList.size()) {
                 String listVersion = stringArrayList.get(i);
                 String homographsText = stringArrayList.get(i + 1);
-                if (listVersion.contains(".")) {
+                if (listVersion.contains(".")&&listVersion.length()!=1) {
                     logger.info("listVersion:" + listVersion);
                     double doubleVersion = getVersion(listVersion);
                     if (homographsText.equals("之前")) {
