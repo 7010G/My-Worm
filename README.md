@@ -15,5 +15,6 @@ http://localhost:8080/getData
 src/main/resources/Product.json
 
 项目集成了IK分词器，词库配置文件为：
-src/main/resources/ext.dic
-
+src / main / resources / ext.dic
+报告图列：
+！[image] （https://user-images.githubusercontent.com/37602564/112410384-12614300-8d56-11eb-81aa-d499c042ce5d.png）
