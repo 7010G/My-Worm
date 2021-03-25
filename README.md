@@ -16,5 +16,7 @@ src/main/resources/Product.json
 
 项目集成了IK分词器，词库配置文件为：
 src / main / resources / ext.dic
+
+
 报告图列：
-！[image] （https://user-images.githubusercontent.com/37602564/112410384-12614300-8d56-11eb-81aa-d499c042ce5d.png）
+![image](https://user-images.githubusercontent.com/37602564/112410576-5bb19280-8d56-11eb-8c8e-722f25e8174e.png)
