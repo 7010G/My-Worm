@@ -28,9 +28,13 @@ import java.io.InputStreamReader;
 public class ConfigUtil {
     private final static Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
     private static  String CONTENT;
+    public static String DIS="SZS";
 
     static {
-        InputStream resourceAsStream = ConfigUtil.class.getResourceAsStream("/Product.json");
+        load();
+    }
+   public static void load() {
+        InputStream resourceAsStream = ConfigUtil.class.getResourceAsStream("/Product_"+DIS+".json");
         CONTENT = toConvertString(resourceAsStream).trim();
     }
     /**

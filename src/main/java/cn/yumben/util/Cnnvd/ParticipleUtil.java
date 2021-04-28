@@ -167,7 +167,7 @@ public class ParticipleUtil {
     public  Double getVersion(String versionText) {
         Double version = null;
         int count = (versionText.length() - versionText.replace(".", "").length()) / ".".length();
-        StringBuilder stringBuilder = new StringBuilder(versionText);
+        StringBuilder stringBuilder = new StringBuilder(versionText.replace("_",""));
         int i = versionText.lastIndexOf(".");
 
         if (count == 2) {

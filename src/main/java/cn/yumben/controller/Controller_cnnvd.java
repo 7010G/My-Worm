@@ -42,11 +42,11 @@ public class Controller_cnnvd {
 
     @RequestMapping(value = "/getData", method = RequestMethod.GET)
     @ResponseBody
-    public String showData(String name, String version, HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
+    public String showData(String name, String version,String dis, HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
         //if(null==name&&null==version){
         //  return "参数为空";
         // }else {
-        List<BugReport> bugReports = service_cnnvd_interface.postTest(name, version);
+        List<BugReport> bugReports = service_cnnvd_interface.postTest(name, version,dis);
         List<Map<String, String>> result = new ArrayList<>();
         for (BugReport bugReport : bugReports) {
             Map<String, String> map = new LinkedHashMap<>();

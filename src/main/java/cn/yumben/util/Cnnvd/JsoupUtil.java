@@ -35,7 +35,7 @@ public class JsoupUtil {
         String count = select.text();
         System.out.println("产品名称:"+paramMap.get("qcvCname"));
         //获取数据总条数
-        Integer pagCount = Integer.parseInt(count.substring(count.lastIndexOf("：") + 1));
+        Integer pagCount = Integer.parseInt(count.substring(count.lastIndexOf("：") + 1).replace(",",""));
         System.out.println("总条数:"+pagCount);
         //计算总页数 （数据总条数+每页显示的条数-1）/每页显示的条数
         int numberPage = (pagCount + 10 - 1) / 10;

@@ -49,10 +49,11 @@ public class Service_cnnvd implements Service_cnnvd_interface {
      *
      * @param name    产品名称
      * @param version 产品版本
+     * @param dis json文件后缀,用来切换不同json配置文件
      * @return
      * @throws InterruptedException
      */
-    public List<BugReport> postTest(String name, String version) throws InterruptedException {
+    public List<BugReport> postTest(String name, String version, String dis) throws InterruptedException {
         String url = "http://www.cnnvd.org.cn/web/vulnerability/queryLds.tag";
         if (null != name && null != version) {
             NAME = name;
@@ -85,7 +86,11 @@ public class Service_cnnvd implements Service_cnnvd_interface {
                 }
             }
         } else {
-            productNameList = ConfigUtil.getValues("SZS", "ProductList");
+            if(null!=dis){
+                ConfigUtil.DIS=dis;
+                ConfigUtil.load();
+            }
+            productNameList = ConfigUtil.getValues("dbase", "ProductList");
 
             //使用Lambda表达式实现多线程闭包
             for (int i = 0; i < productNameList.length(); i++) {
@@ -187,7 +192,7 @@ public class Service_cnnvd implements Service_cnnvd_interface {
             for (Object jsonObject : productNameList) {
                 //根据产品名称获取对用产品的版本集
                 JSONArray versionArray = ConfigUtil.getJSONObject()
-                        .getJSONObject("SZS")
+                        .getJSONObject("dbase")
                         .getJSONObject("ProductVersion")
                         .getJSONArray(jsonObject.toString());
                 //根据产品名称获取单个产品的漏洞集

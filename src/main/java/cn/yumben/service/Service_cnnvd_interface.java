@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface Service_cnnvd_interface {
 
-    List<BugReport> postTest(String name, String version) throws InterruptedException;
+    List<BugReport> postTest(String name, String version,String dis) throws InterruptedException;
 
     boolean versionVS(String loopholeSynopsis, String version);
 
