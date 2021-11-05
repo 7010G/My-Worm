@@ -61,6 +61,7 @@ public class Controller_cnnvd {
             map.put("manufacturers", bugReport.getManufacturers());
             map.put("source", bugReport.getSource());
             map.put("loopholeSynopsis", bugReport.getLoopholeSynopsis());
+            map.put("hitVersion", bugReport.getHitVersion());
             result.add(map);
         }
         if (null == name) {
@@ -72,8 +73,8 @@ public class Controller_cnnvd {
         String headString = name + ":" + version + "漏洞报告";          // 定义表格标题
         String sheetName = name;                  // 定义工作表表名
         String filePath = "E:\\test\\";             // 文件本地保存路径
-        String[] thead = {"漏洞名称", "CNNVD编号", "危害等级", "CVE编号", "漏洞类型", "发布时间", "威胁类型", "更新时间", "厂商", "漏洞来源", "漏洞简介"};                    // 定义表头内容
-        int[] sheetWidth = {2500, 3500, 3000, 4000, 2500, 5000, 5000, 5000, 5000, 5000, 21000};   // 定义每一列宽度
+        String[] thead = {"漏洞名称", "CNNVD编号", "危害等级", "CVE编号", "漏洞类型", "发布时间", "威胁类型", "更新时间", "厂商", "漏洞来源", "漏洞简介","命中版本"};                    // 定义表头内容
+        int[] sheetWidth = {2500, 3500, 3000, 4000, 2500, 5000, 5000, 5000, 5000, 5000, 21000,2500};   // 定义每一列宽度
         HSSFWorkbook wb = new HSSFWorkbook();           // 创建Excel文档对象
         HSSFSheet sheet = wb.createSheet(sheetName);    // 创建工作表
         // ①创建表格标题
