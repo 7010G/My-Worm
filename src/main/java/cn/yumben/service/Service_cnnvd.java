@@ -205,8 +205,13 @@ public class Service_cnnvd implements Service_cnnvd_interface {
                     //产品版本
                     for (Object versionObject : versionArray) {
                         if (versionVS(loopholeSynopsis, versionObject.toString())) {
-                            resultfinal.add(bugReport);
-                            effectiveSet++;
+                            if(resultfinal.contains(bugReport)){
+                                bugReport.setHitVersion(bugReport.getHitVersion()+","+versionObject.toString());
+                            }else{
+                                bugReport.setHitVersion(versionObject.toString());
+                                resultfinal.add(bugReport);
+                                effectiveSet++;
+                            }
                         }
                     }
                     sun++;
@@ -222,6 +227,7 @@ public class Service_cnnvd implements Service_cnnvd_interface {
                 String loopholeSynopsis = bugReport.getLoopholeSynopsis();
                 //产品版本
                 if (versionVS(loopholeSynopsis, VERSION)) {
+                    bugReport.setHitVersion(VERSION.toString());
                     resultfinal.add(bugReport);
                     effectiveSet++;
                 }

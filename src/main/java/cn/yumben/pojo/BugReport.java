@@ -61,9 +61,30 @@ public class BugReport {
      * 补丁
      */
     private Map<String, String> patch;
+    /**
+     * 命中版本
+     */
+    private String hitVersion;
 
     public BugReport() {
         super();
+    }
+
+    public BugReport(String loopholeName, String cnnvdId, String importantLevel, String cveId, String loopholeClass, String publishTime, String threatenClass, String updateTime, String manufacturers, String source, String loopholeSynopsis, List<String> affectedEntities, Map<String, String> patch, String hitVersion) {
+        this.loopholeName = loopholeName;
+        this.cnnvdId = cnnvdId;
+        this.importantLevel = importantLevel;
+        this.cveId = cveId;
+        this.loopholeClass = loopholeClass;
+        this.publishTime = publishTime;
+        this.threatenClass = threatenClass;
+        this.updateTime = updateTime;
+        this.manufacturers = manufacturers;
+        this.source = source;
+        this.loopholeSynopsis = loopholeSynopsis;
+        this.affectedEntities = affectedEntities;
+        this.patch = patch;
+        this.hitVersion = hitVersion;
     }
 
     @Override
@@ -82,6 +103,7 @@ public class BugReport {
                 ", loopholeSynopsis='" + loopholeSynopsis + '\'' +
                 ", affectedEntities=" + affectedEntities +
                 ", patch=" + patch +
+                ", hitVersion=" + hitVersion +
                 '}';
     }
 
@@ -189,19 +211,11 @@ public class BugReport {
         this.patch = patch;
     }
 
-    public BugReport(String loopholeName, String cnnvdId, String importantLevel, String cveId, String loopholeClass, String publishTime, String threatenClass, String updateTime, String manufacturers, String source, String loopholeSynopsis, List<String> affectedEntities, Map<String, String> patch) {
-        this.loopholeName = loopholeName;
-        this.cnnvdId = cnnvdId;
-        this.importantLevel = importantLevel;
-        this.cveId = cveId;
-        this.loopholeClass = loopholeClass;
-        this.publishTime = publishTime;
-        this.threatenClass = threatenClass;
-        this.updateTime = updateTime;
-        this.manufacturers = manufacturers;
-        this.source = source;
-        this.loopholeSynopsis = loopholeSynopsis;
-        this.affectedEntities = affectedEntities;
-        this.patch = patch;
+    public String getHitVersion() {
+        return hitVersion;
+    }
+
+    public void setHitVersion(String hitVersion) {
+        this.hitVersion = hitVersion;
     }
 }
